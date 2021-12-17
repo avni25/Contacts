@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Bu sinif database ile baglantilari olusturmak icin olusturulmustur.
+ * Bu sinif SQLİte ile database ile baglantilari olusturmak icin olusturulmustur.
  * İcerisinde connect, close, add, remove, update methodlari mevcuttur.
  * connect metodu ile ilgili database dosyasina baglanir.
  * İlgili databse dosyasi c:/contacts.db olarak tanimlanmis ve konumlandirilmistir.
+ * Ayrica SQLite baglantisi icin sqlite-jdbc-3.27.2.1.jar dosyasi projenin kutuphanesine eklenmistir
  * add metodu ile contact objesi ilgili databse de belirtilen tabloya eklenir.
  * remove metodu ile istenen contact objesi databaseden silinir.
  * update metodu ile istenen contac objesinin verileri databasede guncellenir.
@@ -75,10 +76,10 @@ public class DB {
         st.close();
     }
 
-    public List<Contact> load(){
+    public ArrayList<Contact> load(){
         try(Statement st = conn.createStatement();
             ResultSet r = st.executeQuery("SELECT * FROM "+TABLE_NAME)){
-            List<Contact> contactList = new ArrayList<>();
+            ArrayList<Contact> contactList = new ArrayList<>();
             while(r.next()){
                 Contact c = new Contact();
                 c.setId(r.getInt(COLUMN_ID));
