@@ -30,13 +30,16 @@ public class Win extends JFrame implements ActionListener{
     public String[][] data;
     public ArrayList<Contact> c;
     public JTable table1;
+    private JLabel label_result;
+    private JLabel label_result2;
     DB db;
 
     public Win(){
         setLayout(new FlowLayout());
-        setTitle("my Window");
-        setLocationRelativeTo(this);
-        setSize(700,600);
+        setTitle("my Contacts");
+        this.pack();
+        setSize(800,600);
+        setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         add(mypanel);
         c = new ArrayList<>();
@@ -49,6 +52,7 @@ public class Win extends JFrame implements ActionListener{
         db = new DB();
         db.connect(DB.DB_NAME);
         setVisible(true);
+
     }
 
     @Override
@@ -60,24 +64,28 @@ public class Win extends JFrame implements ActionListener{
             String phone = text_phone.getText();  //not null
             if(name.equals("") || phone.equals("")){
                 System.out.println("name or phone can not be empty!!");
+                showResultOnLabel(label_result, "name or phone can not be empty!", Color.RED);
+                JOptionPane.showMessageDialog(null, "name or phone can not be empty!!");
             }else{
                 System.out.println(new Contact(name, surname, phone));
                 try{
                     db.add(new Contact(name, surname, phone));
                     c=db.load();
-
+                    showResultOnLabel(label_result, "Contact added to DataBase", Color.GREEN);
+                    clearTextFields();
                 }catch (Exception ee){
                     System.out.println("cant add contact. "+ee.getMessage());
                 }
 
             }
             loadTable(c, columns);
-            clearTextFields();
+
 
         }else if(e.getSource() == loadButton){
             try{
                 c = db.load();
                 loadTable(c, columns);
+                showResultOnLabel(label_result2, "Database loaded successfully", Color.GREEN);
             }catch(Exception er){
                 System.out.println(er.getMessage());
             }
@@ -91,16 +99,18 @@ public class Win extends JFrame implements ActionListener{
             try {
                 db.update(c.get(index));
                 System.out.println(c.get(index).toString());
+                showResultOnLabel(label_result2, "Contact "+c.get(index).getName()+" updated", Color.GREEN);
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
         }else if(e.getSource() == removeButton){
             int index = table1.getSelectedRow();
 //            int[] selections = table1.getSelectedRows();
+            Contact co = c.get(index);
             try{
                 db.remove(c.get(index));
                 c.remove(index);
-
+                showResultOnLabel(label_result2, "Contact "+co.getName()+" removed from Database", Color.RED);
             }catch(Exception er){
                 System.out.println(er.getMessage());
             }
@@ -137,7 +147,11 @@ public class Win extends JFrame implements ActionListener{
         return s;
     }
 
-
+    public void showResultOnLabel(JLabel l, String message, Color c){
+        l.setText(message);
+        l.setForeground(c);
+        l.setVisible(true);
+    }
 
 
 
