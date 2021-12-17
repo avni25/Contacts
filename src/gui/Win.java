@@ -61,12 +61,14 @@ public class Win extends JFrame implements ActionListener{
                 System.out.println(new Contact(name, surname, phone));
                 try{
                     db.add(new Contact(name, surname, phone));
+                    c=db.load();
+
                 }catch (Exception ee){
                     System.out.println("cant add contact. "+ee.getMessage());
                 }
 
             }
-
+            loadTable(c, columns);
             clearTextFields();
 
         }else if(e.getSource() == loadButton){
@@ -79,13 +81,22 @@ public class Win extends JFrame implements ActionListener{
 
 
         }else if(e.getSource() == updateButton){
-            int index = table1.getSelectedRow();
+            int[] selections = table1.getSelectedRows();
+            for (int i = 0; i < selections.length; i++) {
+                System.out.println(selections[i]);
+            }
 
         }else if(e.getSource() == removeButton){
             int index = table1.getSelectedRow();
+            int[] selections = table1.getSelectedRows();
             try{
-                db.remove(c.get(index));
-                c.remove(index);
+                for (int i = 0; i < selections.length; i++) {
+                    int s;
+                    if(i!=0) db.remove(c.get(selections[i]-1));
+                    else db.remove(c.get(selections[i]));
+//                    c.remove(selections[s]);
+                }
+
             }catch(Exception er){
                 System.out.println(er.getMessage());
             }
