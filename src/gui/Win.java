@@ -4,9 +4,12 @@ import com.Contact;
 import com.DB;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 
@@ -81,21 +84,22 @@ public class Win extends JFrame implements ActionListener{
 
 
         }else if(e.getSource() == updateButton){
-            int[] selections = table1.getSelectedRows();
-            for (int i = 0; i < selections.length; i++) {
-                System.out.println(selections[i]);
+            int index = table1.getSelectedRow();
+            c.get(index).setName(table1.getValueAt(index, 1).toString());
+            c.get(index).setSurname(table1.getValueAt(index, 2).toString());
+            c.get(index).setPhone_number(table1.getValueAt(index, 3).toString());
+            try {
+                db.update(c.get(index));
+                System.out.println(c.get(index).toString());
+            } catch (SQLException ex) {
+                ex.printStackTrace();
             }
-
         }else if(e.getSource() == removeButton){
             int index = table1.getSelectedRow();
-            int[] selections = table1.getSelectedRows();
+//            int[] selections = table1.getSelectedRows();
             try{
-                for (int i = 0; i < selections.length; i++) {
-                    int s;
-                    if(i!=0) db.remove(c.get(selections[i]-1));
-                    else db.remove(c.get(selections[i]));
-//                    c.remove(selections[s]);
-                }
+                db.remove(c.get(index));
+                c.remove(index);
 
             }catch(Exception er){
                 System.out.println(er.getMessage());
@@ -106,8 +110,14 @@ public class Win extends JFrame implements ActionListener{
     }
 
     public void loadTable(ArrayList<Contact> c, String[] cols){
-        data = convertListTo2DArray(c);
-        table1.setModel(new DefaultTableModel(data, cols));
+        data = convertListTo2DArray(c);                             // arraylisti diziye cevirir
+        table1.setModel(new DefaultTableModel(data, cols){          // olsuturulan dizi tabloya eklenir sutun basliklarini iceren dizi ile birlikte.
+            @Override
+            public boolean isCellEditable(int row, int column)      // id column degerleri degistirilemez.
+            {
+                return column == 1 || column == 2 || column == 3;   // name, surname, tel kolonlari degistirilebirlir.
+            }
+        });
     }
 
     public void clearTextFields(){
