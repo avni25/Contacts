@@ -15,7 +15,7 @@ public class Main {
 //      db.add(avni);
         List<Contact> contacts = db.load();
 //      db.remove(contacts.get(2));
-        contacts.get(0).setName("cccc");
+        contacts.get(0).setName("eee");
         System.out.println(contacts.get(0).toString());
         db.update(contacts.get(0));
 

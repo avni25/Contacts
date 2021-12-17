@@ -3,7 +3,22 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Bu sinif database ile baglantilari olusturmak icin olusturulmustur.
+ * İcerisinde connect, close, add, remove, update methodlari mevcuttur.
+ * connect metodu ile ilgili database dosyasina baglanir.
+ * İlgili databse dosyasi c:/contacts.db olarak tanimlanmis ve konumlandirilmistir.
+ * add metodu ile contact objesi ilgili databse de belirtilen tabloya eklenir.
+ * remove metodu ile istenen contact objesi databaseden silinir.
+ * update metodu ile istenen contac objesinin verileri databasede guncellenir.
+ *
+ * ilgili databe dosyasi, dosya yolu, tablo adi ve
+ * tablo icerisindeki kolonlarin isimleri ve
+ * kurulacak baglanti objesi global olarak tanımlanmistir.
+ *
+ *
+ *
+ * */
 public class DB {
 
     public static final String DB_NAME ="Contacts.db";
@@ -37,6 +52,12 @@ public class DB {
         }
     }
 
+
+    /**
+     * DB'e Contact nesnesi eklerken contac id girmeye gerek yoktur. Cunku olusturulan
+     * db tablosunda contact_id kolonu primary key olarak atanmis ve otomatik olarak
+     * (bir artırilarak) belirlenmektedir.
+     * */
     public void add(Contact c)throws SQLException{
         Statement st = conn.createStatement();
 
@@ -83,9 +104,9 @@ public class DB {
          * SET column1 = value1, column2 = value2, ...
          * WHERE condition;
          *
-         * UPDATE Customers
-         * SET ContactName = 'Alfred Schmidt', City= 'Frankfurt'
-         * WHERE CustomerID = 1;
+         * UPDATE contacts
+         * SET name = 'val1', surname = 'val2', phone_number = 'val3'
+         * WHERE contact_id = 1;
          * */
         Statement st = conn.createStatement();
         try {
