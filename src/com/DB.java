@@ -7,8 +7,9 @@ import java.util.List;
  * Bu sinif SQLİte ile database ile baglantilari olusturmak icin olusturulmustur.
  * İcerisinde connect, close, add, remove, update methodlari mevcuttur.
  * connect metodu ile ilgili database dosyasina baglanir.
+ *
  * İlgili databse dosyasi c:/contacts.db olarak tanimlanmis ve konumlandirilmistir.
- * Ayrica SQLite baglantisi icin sqlite-jdbc-3.27.2.1.jar dosyasi projenin kutuphanesine eklenmistir
+ * Ayrica SQLite baglantisi icin sqlite-jdbc-3.27.2.1.jar dosyasi projenin kutuphanesine eklenmistir.
  * add metodu ile contact objesi ilgili databse de belirtilen tabloya eklenir.
  * remove metodu ile istenen contact objesi databaseden silinir.
  * update metodu ile istenen contac objesinin verileri databasede guncellenir.
@@ -137,5 +138,20 @@ public class DB {
 
         st.close();
     }
+
+    public void remove(int id) throws SQLException {
+        //DELETE FROM table_name WHERE condition;
+        //DELETE FROM Customers WHERE CustomerName='Alfreds Futterkiste';
+        Statement st = conn.createStatement();
+        try{
+            st.execute("DELETE FROM "+TABLE_NAME+" WHERE "+COLUMN_ID+" = "+id+"");
+            System.out.println("contact no "+id+" removed!");
+        }catch (Exception e){
+            System.out.println("cant remove contact!! "+e.getMessage());
+        }
+
+        st.close();
+    }
+
 
 }

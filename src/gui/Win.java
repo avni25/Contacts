@@ -34,6 +34,17 @@ public class Win extends JFrame implements ActionListener{
     private JLabel label_result2;
     DB db;
 
+    /**
+     * Constructor
+     * Win nesnesi olusturuldugunda;
+     * asagidaki ayarlarda pencere olusturulur ve goruntulenir
+     * Buna ek olarak butun butonlara actionlistener atanir
+     * Databse nesnesi olusturulur ve database baglantisi kurulur.
+     * Database den Tabloya veriler yukarıda global olarak tanımlanmis olan
+     * c arraylist araciligi ile aktarilir.
+     *
+     *
+     * */
     public Win(){
         setLayout(new FlowLayout());
         setTitle("my Contacts");
@@ -55,9 +66,35 @@ public class Win extends JFrame implements ActionListener{
 
     }
 
+
+    /**
+     * Butonlarin islevleri bu metodla tanimlanmistir
+     *
+     * Add butonu:
+     * Textfield a girilen verilerden COntact nesnesi olusturur. contact nesnesini
+     * c araylistine ve veritabanina ekler. Ekledikten sonra Tabloyu gunceller ve
+     * yeni eklenen kisiyi tabloda gosterir.
+     * Name ve phone textfieldlar bos olamaz. kaydedebilmesi icin mutlaka deger almalari gerekir.
+     *
+     *
+     * Load Butonu:
+     * Veritabnındaki tum verilerli okur ve tabloda gosterir. DB sınıfinin icerisindeki
+     * load metodunu kullanir. Bu metod arraylist dondurur. Yani veriler c arraylistine
+     * kaydedilir.
+     *
+     * Update BUtonu:
+     * Tabloda uzeri secilen kisinin bilgilerini gunceller ve veritabanina kaydeder.
+     * Guncellenmek istenen kisinin verileri tablodan cift tiklama ile girilerek degistirilir.
+     * SOnrasinda kisi satiri hala seicli iken update butonu ile yeni veriler veritabanina eklenir.
+     *
+     * Remove Butonu:
+     * Tabloda secilen kisiyi veritanabindan siler. Bunun icin ilgili kisi secilri ve
+     * butona basilir.
+     *
+     * */
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource()==addButton){
+        if(e.getSource()==addButton){           // Kaydet butonu
             System.out.println("add");
             String name = text_name.getText();  // not null
             String surname = text_surname.getText();
@@ -81,35 +118,35 @@ public class Win extends JFrame implements ActionListener{
             loadTable(c, columns);
 
 
-        }else if(e.getSource() == loadButton){
+        }else if(e.getSource() == loadButton){          // Okuma butonu
             try{
-                c = db.load();
-                loadTable(c, columns);
+                c = db.load();                  // databaseden okunan veriler c arraylistine aktarilir
+                loadTable(c, columns);          // c deki veriler tablo ya aktarilir
                 showResultOnLabel(label_result2, "Database loaded successfully", Color.GREEN);
             }catch(Exception er){
                 System.out.println(er.getMessage());
             }
 
 
-        }else if(e.getSource() == updateButton){
+        }else if(e.getSource() == updateButton){            // Guncelleme Butonu
             int index = table1.getSelectedRow();
-            c.get(index).setName(table1.getValueAt(index, 1).toString());
+            c.get(index).setName(table1.getValueAt(index, 1).toString());       //degisikliy yapilan kolonnun arraylistte karsilik gelen degeri guncellenir
             c.get(index).setSurname(table1.getValueAt(index, 2).toString());
             c.get(index).setPhone_number(table1.getValueAt(index, 3).toString());
             try {
-                db.update(c.get(index));
+                db.update(c.get(index));        // Db sinifindan update metodu ile ilgili satir guncellenir
                 System.out.println(c.get(index).toString());
                 showResultOnLabel(label_result2, "Contact "+c.get(index).getName()+" updated", Color.GREEN);
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
-        }else if(e.getSource() == removeButton){
+        }else if(e.getSource() == removeButton){            //Sİlme Butonu
             int index = table1.getSelectedRow();
 //            int[] selections = table1.getSelectedRows();
             Contact co = c.get(index);
             try{
-                db.remove(c.get(index));
-                c.remove(index);
+                db.remove(c.get(index));        // DB sinifnden remove metodu ile ilgili satir silinir
+                c.remove(index);                // c arraylistinden de silinir
                 showResultOnLabel(label_result2, "Contact "+co.getName()+" removed from Database", Color.RED);
             }catch(Exception er){
                 System.out.println(er.getMessage());
@@ -119,6 +156,12 @@ public class Win extends JFrame implements ActionListener{
         }
     }
 
+
+    /**
+     * Veri atabnından verileri okur ve arraylist dondurur.
+     * Bu arraylisti de 2d diziye cevirir ve Tabloda verileri gosterir.
+     * Tabloda 0.kolon(id) haric diger kolonlar duzenlenebilir. id kolonu degistirilemez.
+     * */
     public void loadTable(ArrayList<Contact> c, String[] cols){
         data = convertListTo2DArray(c);                             // arraylisti diziye cevirir
         table1.setModel(new DefaultTableModel(data, cols){          // olsuturulan dizi tabloya eklenir sutun basliklarini iceren dizi ile birlikte.
@@ -130,27 +173,48 @@ public class Win extends JFrame implements ActionListener{
         });
     }
 
+    /**
+     * Kayit sonrasi textfield lar temizlenir
+     * */
     public void clearTextFields(){
         for (int i = 0; i < textFields.length; i++) {
             textFields[i].setText("");
         }
     }
 
+
+    /**
+     *Bu fonksiyon Contact nesnesi alan arraylisti 2d diziye cevirir.
+     * Bu fonksiyonun olusturulmasinin nedeni Tablonun doldurulmasinda kullanilan
+     * metodun(DefaultTableModel(Object[][] array, Object[] arr))
+     * parametre olarak 2d dizi almasidir.
+     * Kullanim kolayliği acisindan islemlerde arraylist kullanilmistir. Arraylist
+     * verilerini tabloya aktarmak icin de bu metod aracılıgı ile diziye donusturulup
+     * tabloda gösterilmistir.
+     * */
     public String[][] convertListTo2DArray(ArrayList<Contact> c){
-        String[][] s = new String[c.size()][columns.length];
-        for (int i = 0; i < c.size(); i++) {
-            s[i][0] = c.get(i).getId().toString();
+        String[][] s = new String[c.size()][columns.length];    // bos bir 2d dizi
+        for (int i = 0; i < c.size(); i++) {                    // her contact nesnesinin degerlerini
+            s[i][0] = c.get(i).getId().toString();              // diziye aktarir
             s[i][1] = c.get(i).getName();
             s[i][2] = c.get(i).getSurname();
             s[i][3] = c.get(i).getPhone_number();
         }
-        return s;
+        return s;                                               // ilgili diziyi dondurur
     }
 
+
+    /**
+     *islemlerin gerceklesip gerceklesmedigini takip edebilmek icin
+     * kullaniciyi bilgilendirmek amacli label olusturulmus ve bu etiketler araciligi
+     * ile kullanici islemler hakkinda bilgilendirilmistir.
+     * Ayni kodu tekrarlamamam ve kodu kisaltmak icin etiketlerin tasarimi bu metodla
+     * belirtilmistir
+     * */
     public void showResultOnLabel(JLabel l, String message, Color c){
-        l.setText(message);
-        l.setForeground(c);
-        l.setVisible(true);
+        l.setText(message);     //etiket text belirler
+        l.setForeground(c);     // yazi rengini belirler
+        l.setVisible(true);     // gorunur yapar
     }
 
 
