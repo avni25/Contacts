@@ -5,6 +5,7 @@ import com.DB;
 import com.RandomContact;
 
 import javax.swing.*;
+import javax.swing.Timer;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
@@ -12,6 +13,10 @@ import java.awt.*;
 import java.awt.event.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.*;
+import java.util.Date;
+import java.lang.*;
+import java.text.*;
 
 
 public class Win extends JFrame implements ActionListener{
@@ -34,6 +39,7 @@ public class Win extends JFrame implements ActionListener{
     public JTable table1;
     private JLabel label_result;
     private JLabel label_result2;
+    private JLabel label_time;
 
     DB db;
 
@@ -65,6 +71,9 @@ public class Win extends JFrame implements ActionListener{
 
         db = new DB();
         db.connect(DB.DB_NAME);
+
+        ShowTime(label_time);
+
         setVisible(true);
 
     }
@@ -230,7 +239,13 @@ public class Win extends JFrame implements ActionListener{
         l.setVisible(true);     // gorunur yapar
     }
 
-
+    public static void ShowTime(JLabel lbl) {
+        new Timer(0, e -> {
+            Date d = new Date();
+            SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyy HH:mm:ss");
+            lbl.setText(s.format(d));
+        }).start();
+    }
 
 }
 
