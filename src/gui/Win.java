@@ -2,6 +2,7 @@ package gui;
 
 import com.Contact;
 import com.DB;
+import com.RandomContact;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -22,9 +23,10 @@ public class Win extends JFrame implements ActionListener{
     private JButton loadButton;
     private JButton updateButton;
     private JButton removeButton;
+    private JButton randAddButton;
     private JPanel mypanel;
     private JScrollPane sp;
-    JButton[] buttons = {addButton, loadButton, updateButton, removeButton};
+    JButton[] buttons = {addButton, loadButton, updateButton, removeButton, randAddButton};
     JTextField[] textFields = {text_name, text_surname, text_phone};
     public String[] columns = {"contac_id", "name", "surname", "phone_number"};
     public String[][] data;
@@ -32,6 +34,7 @@ public class Win extends JFrame implements ActionListener{
     public JTable table1;
     private JLabel label_result;
     private JLabel label_result2;
+
     DB db;
 
     /**
@@ -153,6 +156,12 @@ public class Win extends JFrame implements ActionListener{
             }
 
             loadTable(c,columns);
+        }else if(e.getSource() == randAddButton){
+            Contact c = RandomContact.generateRandomContact();
+            text_name.setText(c.getName());
+            text_surname.setText(c.getSurname());
+            text_phone.setText(c.getPhone_number());
+            System.out.println(c.toString());
         }
     }
 
