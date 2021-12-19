@@ -38,8 +38,11 @@ public class DB {
     }
 
     public void connect(String database_name){
+        String dir = new File("").getAbsolutePath()+"\\src\\db\\";
+        dir = "jdbc:sqlite:"+ dir.replaceAll("\\\\", "//");
+        
         try{
-            conn = DriverManager.getConnection(fileURL+database_name);
+            conn = DriverManager.getConnection(dir+database_name);
             System.out.println("connected to databse");
         }catch(Exception e){
             System.out.println("cant connect to database"+e.getMessage());
@@ -63,8 +66,21 @@ public class DB {
     public void add(Contact c)throws SQLException{
         Statement st = conn.createStatement();
 
-        st.execute("CREATE TABLE IF NOT EXISTS "+TABLE_NAME+
-                " ("+COLUMN_NAME+" TEXT, "+COLUMN_SURNAME+" TEXT, "+COLUMN_PHONE_NUMBER+" TEXT)");
+        st.execute("CREATE TABLE IF NOT EXISTS '"+TABLE_NAME+"'"+
+                 "('contact_id' INTEGER NOT NULL UNIQUE,"+
+                    "'"+COLUMN_NAME+"' TEXT NOT NULL, "+
+                    "'"+COLUMN_SURNAME+"' TEXT, "+
+                    "'"+COLUMN_PHONE_NUMBER+"' TEXT NOT NULL," +
+                "PRIMARY KEY('contact_id' AUTOINCREMENT))");
+        /*
+                * CREATE TABLE "contacts" (
+            "contact_id"	INTEGER NOT NULL UNIQUE,
+            "name"	TEXT NOT NULL,
+            "surname"	TEXT,
+            "phone_number"	TEXT NOT NULL,
+            PRIMARY KEY("contact_id" AUTOINCREMENT)
+        );
+        * */
 
         try{
             st.execute("INSERT INTO "+TABLE_NAME+"("+COLUMN_NAME+", "+COLUMN_SURNAME+", "+COLUMN_PHONE_NUMBER+")"+
