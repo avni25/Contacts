@@ -94,6 +94,10 @@ public class Win extends JFrame implements ActionListener{
      * Tabloda secilen kisiyi veritanabindan siler. Bunun icin ilgili kisi secilri ve
      * butona basilir.
      *
+     * Generate Random Contact Butonu:
+     * .txt dosyasindaki isim ve soyisimlerden rastgele contact nesnesi olusturur ve
+     * textfieldlara contact verilerini yazar
+     *
      * */
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -156,9 +160,9 @@ public class Win extends JFrame implements ActionListener{
             }
 
             loadTable(c,columns);
-        }else if(e.getSource() == randAddButton){
-            Contact c = RandomContact.generateRandomContact();
-            text_name.setText(c.getName());
+        }else if(e.getSource() == randAddButton){   // Generate Random Contact Butonu:
+            Contact c = RandomContact.generateRandomContact();  // rastegele bir contact nesnesi olusturulur
+            text_name.setText(c.getName());             // isim textfielda contact nesnesinin ismi yazilir.
             text_surname.setText(c.getSurname());
             text_phone.setText(c.getPhone_number());
             System.out.println(c.toString());
