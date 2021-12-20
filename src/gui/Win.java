@@ -157,16 +157,24 @@ public class Win extends JFrame implements ActionListener{
                 ex.printStackTrace();
             }
         }else if(e.getSource() == removeButton){            //Sİlme Butonu
-            int index = table1.getSelectedRow();
-//            int[] selections = table1.getSelectedRows();
-            Contact co = c.get(index);
+            int[] selections = table1.getSelectedRows();
+            for (int i = 0; i < selections.length; i++) {
+                Contact co = c.get(selections[i]);
+                try{
+                    db.remove(c.get(selections[i]).getId());        // DB sinifnden remove metodu ile ilgili satir silinir
+                    showResultOnLabel(label_result2, "Contact "+co.getName()+" removed from Database", Color.RED);
+                }catch(Exception er){
+                    System.out.println(er.getMessage());
+                }
+            }
+
             try{
-                db.remove(c.get(index));        // DB sinifnden remove metodu ile ilgili satir silinir
-                c.remove(index);                // c arraylistinden de silinir
-                showResultOnLabel(label_result2, "Contact "+co.getName()+" removed from Database", Color.RED);
+                c.removeAll(c);
+                c = db.load();
             }catch(Exception er){
                 System.out.println(er.getMessage());
             }
+
 
             loadTable(c,columns);
         }else if(e.getSource() == randAddButton){   // Generate Random Contact Butonu:

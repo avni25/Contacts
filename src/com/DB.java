@@ -1,8 +1,10 @@
 package com;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
-
+import java.util.*;
+import java.awt.*;
+import java.lang.*;
+import java.io.*;
 /**
  * Bu sinif SQLİte ile database ile baglantilari olusturmak icin olusturulmustur.
  * İcerisinde connect, close, add, remove, update methodlari mevcuttur.
@@ -38,8 +40,11 @@ public class DB {
     }
 
     public void connect(String database_name){
+        String dir = new File("").getAbsolutePath()+"\\src\\db\\";
+        dir = "jdbc:sqlite:"+ dir.replaceAll("\\\\", "//");
+
         try{
-            conn = DriverManager.getConnection(fileURL+database_name);
+            conn = DriverManager.getConnection(dir+database_name);
             System.out.println("connected to databse");
         }catch(Exception e){
             System.out.println("cant connect to database"+e.getMessage());
