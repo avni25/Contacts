@@ -32,6 +32,7 @@
         </constraints>
         <properties>
           <font size="18" style="1"/>
+          <foreground color="-13946989"/>
           <text value="Telephone"/>
         </properties>
       </component>
@@ -50,6 +51,9 @@
           <grid row="12" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
+          <background color="-13946989"/>
+          <font size="16" style="1"/>
+          <foreground color="-1376296"/>
           <icon value="icons/load.gif"/>
           <text value="Load"/>
         </properties>
@@ -60,6 +64,8 @@
         </constraints>
         <properties>
           <background color="-41121"/>
+          <font size="16" style="1"/>
+          <foreground color="-1769494"/>
           <icon value="icons/remove.gif"/>
           <text value="Remove"/>
         </properties>
@@ -69,6 +75,9 @@
           <grid row="12" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
+          <background color="-13946989"/>
+          <font size="16" style="1"/>
+          <foreground color="-1769494"/>
           <icon value="icons/update.gif"/>
           <text value="Update"/>
         </properties>
@@ -91,14 +100,16 @@
         </constraints>
         <properties>
           <background color="-1376296"/>
+          <foreground color="-13946989"/>
         </properties>
         <border type="none"/>
         <children>
           <component id="8efb2" class="javax.swing.JTable" binding="table1" default-binding="true">
             <constraints/>
             <properties>
-              <autoCreateRowSorter value="false"/>
+              <autoCreateRowSorter value="true"/>
               <columnSelectionAllowed value="false"/>
+              <foreground color="-15986029"/>
             </properties>
           </component>
         </children>
@@ -109,6 +120,7 @@
         </constraints>
         <properties>
           <font size="18" style="1"/>
+          <foreground color="-13946989"/>
           <text value="Name"/>
         </properties>
       </component>
@@ -118,6 +130,7 @@
         </constraints>
         <properties>
           <font size="18" style="1"/>
+          <foreground color="-13946989"/>
           <text value="Surname"/>
         </properties>
       </component>
@@ -150,6 +163,10 @@
           <grid row="8" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
+          <background color="-13946989"/>
+          <enabled value="true"/>
+          <font size="16" style="1"/>
+          <foreground color="-1376296"/>
           <icon value="icons/add.gif"/>
           <iconTextGap value="10"/>
           <text value="Add"/>
@@ -171,6 +188,8 @@
           <grid row="9" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
+          <background color="-13946989"/>
+          <foreground color="-1769494"/>
           <text value="Generate Random Contact"/>
         </properties>
       </component>

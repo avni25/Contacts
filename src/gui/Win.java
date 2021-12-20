@@ -67,6 +67,7 @@ public class Win extends JFrame implements ActionListener{
 
         for (JButton button : buttons) {
             button.addActionListener(this);
+            button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         }
 
         db = new DB();
